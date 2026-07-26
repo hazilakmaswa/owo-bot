@@ -1,0 +1,28 @@
+{
+  "name": "owo-bot-enhanced",
+  "version": "2.0.0",
+  "description": "An upgraded, feature-rich OwO Discord Bot clone with Economy, Hunt, Zoo, Pet Battles, Casino, Marriage, Quests, croxydb storage, and Discord Components V2.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": [
+    "discord-bot",
+    "owo-bot",
+    "discord-js-v14",
+    "economy-bot",
+    "zoo-bot",
+    "croxydb",
+    "pet-battle",
+    "casino-bot"
+  ],
+  "author": "Senotron",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "croxydb": "^0.0.8",
+    "discord.js": "^14.14.0",
+    "dotenv": "^16.4.5"
+  }
+}

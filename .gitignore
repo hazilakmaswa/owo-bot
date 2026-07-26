@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Database & local data
+croxydb/
+*.json.db
+test_verification.js
+
+# Logs
+*.log
+npm-debug.log*
