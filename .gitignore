@@ -7,8 +7,6 @@ node_modules/
 # Database & local data
 croxydb/
 *.json.db
-test_verification.js
-
 # Logs
 *.log
 npm-debug.log*
