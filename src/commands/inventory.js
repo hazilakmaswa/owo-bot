@@ -10,7 +10,7 @@ const SHOP_ITEMS = [
 
 module.exports = {
   name: 'inventory',
-  aliases: ['inv', 'shop', 'buy', 'use'],
+  aliases: ['inv', 'shop', 'buy', 'use', 'crate', 'check', 'box', 'lootbox'],
   description: 'Manage your items, view shop, buy boxes or use luck gems.',
   slashData: new SlashCommandBuilder()
     .setName('inventory')

@@ -3,7 +3,7 @@ const { getUserProfile, saveUserProfile, removeItem } = require('../database/db'
 
 module.exports = {
   name: 'profile',
-  aliases: ['p', 'quest', 'marry', 'divorce'],
+  aliases: ['p', 'my', 'quest', 'marry', 'divorce', 'bio'],
   description: 'View user profile, quests, or manage marriage.',
   slashData: new SlashCommandBuilder()
     .setName('profile')
