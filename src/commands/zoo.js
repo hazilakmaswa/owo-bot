@@ -119,15 +119,44 @@ function formatZooDisplay(groupedByRarity) {
 
 function handleSell(userId, username, args, messageObj) {
   const profile = getUserProfile(userId);
-  const animalId = args[0] ? args[0].toLowerCase() : null;
+  const target = args[0] ? args[0].toLowerCase() : null;
 
-  if (!animalId) {
-    return messageObj.reply('❌ Please specify an animal to sell! Example: `owo sell cat`');
+  if (!target) {
+    return messageObj.reply('❌ Please specify an animal to sell! Example: `owo sell cat`, `owo sell all`, or `owo sell common`');
   }
 
-  const animal = getAnimalById(animalId);
+  // Handle "sell all" or "sell common"
+  if (target === 'all' || target === 'common') {
+    let totalEarned = 0;
+    let totalSold = 0;
+
+    for (const animalId in profile.zoo) {
+      const count = profile.zoo[animalId];
+      if (count <= 0) continue;
+      const animal = getAnimalById(animalId);
+      if (!animal) continue;
+
+      if (target === 'common' && animal.rarity !== 'COMMON') continue;
+
+      const rarityInfo = RARITIES[animal.rarity];
+      const value = rarityInfo.sellValue * count;
+      totalEarned += value;
+      totalSold += count;
+
+      removeAnimal(userId, animalId, count);
+    }
+
+    if (totalSold === 0) {
+      return messageObj.reply(`❌ No animals found to sell for category: **${target.toUpperCase()}**.`);
+    }
+
+    addCash(userId, totalEarned);
+    return messageObj.reply(`💰 Sold **${totalSold}** animals (${target.toUpperCase()}) for **+${totalEarned.toLocaleString()}** 🪙 Cowoncy!`);
+  }
+
+  const animal = getAnimalById(target);
   if (!animal) {
-    return messageObj.reply(`❌ Unknown animal \`${animalId}\`. Check your \`owo zoo\` for valid names.`);
+    return messageObj.reply(`❌ Unknown animal \`${target}\`. Check your \`owo zoo\` for valid names.`);
   }
 
   const countToSell = args[1] && !isNaN(args[1]) ? parseInt(args[1]) : 1;
