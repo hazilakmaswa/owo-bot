@@ -27,28 +27,39 @@ module.exports = {
   }
 };
 
-function renderProfile(user, messageObj = null, interactionObj = null) {
+const { generateProfileCard } = require('../utils/canvasCard');
+
+async function renderProfile(user, messageObj = null, interactionObj = null) {
   const profile = getUserProfile(user.id);
   const totalAnimals = Object.values(profile.zoo || {}).reduce((a, b) => a + b, 0);
 
-  const embed = new EmbedBuilder()
-    .setColor(0x9b59b6)
-    .setTitle(`👤 **${user.username}'s Profile**`)
-    .setThumbnail(user.displayAvatarURL({ dynamic: true }))
-    .setDescription(`*"${profile.bio}"*`)
-    .addFields(
-      { name: '🪙 Cowoncy Balance', value: `**${profile.cash.toLocaleString()}** 🪙`, inline: true },
-      { name: '✨ Level & XP', value: `Level **${profile.level}** (${profile.xp} XP)`, inline: true },
-      { name: '🐾 Zoo Count', value: `**${totalAnimals}** Animals`, inline: true },
-      { name: '💍 Married To', value: profile.marriedTo ? `<@${profile.marriedTo}>` : 'Single', inline: true },
-      { name: '🙏🏻 Pray / Curse', value: `Prayed: ${profile.prayCount || 0} | Cursed: ${profile.curseCount || 0}`, inline: true },
-      { name: '🔥 Daily Streak', value: `**${profile.dailyStreak || 0} Days**`, inline: true }
-    )
-    .setFooter({ text: `User ID: ${user.id}` })
-    .setTimestamp();
+  try {
+    const cardAttachment = await generateProfileCard(user, profile, totalAnimals);
 
-  const payload = { embeds: [embed] };
-  return interactionObj ? interactionObj.reply(payload) : messageObj.reply(payload);
+    const embed = new EmbedBuilder()
+      .setColor(0x9b59b6)
+      .setTitle(`👤 **${user.username}'s RPG Profile Card**`)
+      .setImage('attachment://profile-card.png')
+      .setFooter({ text: 'Developer: Senotron | Canvas Card Render' })
+      .setTimestamp();
+
+    const payload = { embeds: [embed], files: [cardAttachment] };
+    return interactionObj ? interactionObj.reply(payload) : messageObj.reply(payload);
+  } catch (err) {
+    console.error('Canvas profile card error fallback:', err);
+    // Fallback to text embed if canvas fails
+    const embed = new EmbedBuilder()
+      .setColor(0x9b59b6)
+      .setTitle(`👤 **${user.username}'s Profile**`)
+      .setDescription(`*"${profile.bio}"*`)
+      .addFields(
+        { name: '🪙 Cowoncy Balance', value: `**${profile.cash.toLocaleString()}** 🪙`, inline: true },
+        { name: '✨ Level & XP', value: `Level **${profile.level}** (${profile.xp} XP)`, inline: true },
+        { name: '🐾 Zoo Count', value: `**${totalAnimals}** Animals`, inline: true }
+      );
+    const payload = { embeds: [embed] };
+    return interactionObj ? interactionObj.reply(payload) : messageObj.reply(payload);
+  }
 }
 
 function handleQuests(userId, username, messageObj) {
