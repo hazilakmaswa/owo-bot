@@ -2,6 +2,7 @@
 
 [![Developer](https://img.shields.io/badge/Developer-Senotron-purple.svg)](https://github.com/senotron)
 [![Repository](https://img.shields.io/badge/GitHub-senotron%2Fowo--bot-black.svg)](https://github.com/senotron/owo-bot)
+[![OwO Bot CI Test](https://github.com/senotron/owo-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/senotron/owo-bot/actions/workflows/ci.yml)
 [![Node.js Version](https://img.shields.io/badge/Node.js-v18.0%2B-green.svg)](https://nodejs.org)
 [![Discord.js](https://img.shields.io/badge/discord.js-v14.14-blue.svg)](https://discord.js.org)
 [![Database](https://img.shields.io/badge/Database-croxydb-orange.svg)](https://www.npmjs.com/package/croxydb)
