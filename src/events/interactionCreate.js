@@ -76,6 +76,13 @@ module.exports = {
           return interaction.update({ embeds: [result.embed], components: result.components });
         }
 
+        // Buy Lotto Buttons
+        if (customId.startsWith('buy_lotto_')) {
+          const count = customId.startsWith('buy_lotto_10_') ? 10 : 1;
+          const { buyLotteryTickets } = require('../commands/lottery');
+          return buyLotteryTickets(interaction.user.id, interaction.user.username, count, interaction);
+        }
+
         // Blackjack Controls
         if (customId.startsWith('bj_')) {
           const gameState = activeGames.get(interaction.user.id);

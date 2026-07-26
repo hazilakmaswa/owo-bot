@@ -16,6 +16,7 @@ module.exports = {
     if (sub === 'quest' || sub === 'quests') return handleQuests(message.author.id, message.author.username, message);
     if (sub === 'marry') return handleMarry(message.author.id, message.author.username, message.mentions.users.first(), message);
     if (sub === 'divorce') return handleDivorce(message.author.id, message.author.username, message);
+    if (sub === 'bio') return handleBio(message.author.id, args.slice(1).join(' '), message);
 
     const targetUser = message.mentions.users.first() || message.author;
     return renderProfile(targetUser, message);
@@ -125,4 +126,12 @@ function handleDivorce(userId, username, messageObj) {
   saveUserProfile(exPartnerId, exProfile);
 
   return messageObj.reply(`💔 **${username}** divorced <@${exPartnerId}>. You are now single.`);
+}
+
+function handleBio(userId, newBio, messageObj) {
+  if (!newBio) return messageObj.reply('❌ Please provide a bio text! Example: `owo bio I am the master of animals!`');
+  const profile = getUserProfile(userId);
+  profile.bio = newBio.slice(0, 150);
+  saveUserProfile(userId, profile);
+  return messageObj.reply(`✅ Updated your profile bio to: *"${profile.bio}"*`);
 }
